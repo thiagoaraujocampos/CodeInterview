@@ -6,6 +6,8 @@ import IllustrationImg from '../../assets/illustration.png';
 import { ButtonIcon } from '../../components/ButtonIcon';
 import { styles } from './styles';
 
+import { Background } from '../../components/Backgound';
+
 export function SignIn() {
   const navigation = useNavigation();
   
@@ -14,7 +16,8 @@ export function SignIn() {
   }
 
   return (
-    <View style={styles.container}>
+    <Background>
+      <View style={styles.container}>
       <Image source={IllustrationImg} style={styles.image} />
 
       <View style={styles.content}>
@@ -34,5 +37,6 @@ export function SignIn() {
         />
       </View>
     </View>
+    </Background>
   )
 }
