@@ -2,13 +2,17 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { Avatar } from '../Avatar';
 
+import { useAuth } from '../../hooks/auth';
+
 import { styles } from './styles';
 
 export function Profile() {
+  const { user } = useAuth()
+
   return(
     <View style={styles.container}>
       
-      <Avatar urlImage='https://instagram.fqsc1-1.fna.fbcdn.net/v/t51.2885-15/255398609_175441054797284_2062283905179635379_n.jpg?stp=dst-jpg_e35&_nc_ht=instagram.fqsc1-1.fna.fbcdn.net&_nc_cat=108&_nc_ohc=qOhkm2qTV9cAX8k5R86&edm=ALQROFkBAAAA&ccb=7-4&ig_cache_key=MjcwNDE4Mjg5MTkxODc0NTcwNw%3D%3D.2-ccb7-4&oh=00_AT_uk06dhNycIXUAk7fq5js-yJhlmFrfPRM9f9mD4b8LwQ&oe=62225AA8&_nc_sid=30a2ef' />
+      <Avatar urlImage={user.avatar} />
       
       <View>
         <View style={styles.user}>
@@ -16,7 +20,7 @@ export function Profile() {
             Olá,
           </Text>
           <Text style={styles.username}>
-            Isabelle
+            { user.firstName }
           </Text>
         </View>
 
