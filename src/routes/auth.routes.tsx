@@ -1,10 +1,11 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
+import { theme } from '../global/styles/theme';
+
 import { Home } from '../screens/Home'
 import { AppointmentCreate } from '../screens/AppointmentCreate'
 import { AppointmentDetails } from '../screens/AppointmentDetails'
-import { theme } from '../global/styles/theme';
 
 const { Navigator, Screen } = createStackNavigator();
 

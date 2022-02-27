@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "codeinterview",
-    "slug": "codeinterview",
+    "name": "CodeInterview",
+    "slug": "CodeInterview",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "scheme": "codeinterview",
+    "scheme": "codeinterview", 
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",

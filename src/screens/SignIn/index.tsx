@@ -17,8 +17,8 @@ export function SignIn() {
   async function handleSignIn() {
     try {
       await signIn();
-    } catch(error: any) {
-      Alert.alert(error);
+    } catch(error) {
+      Alert.alert('error');
     }
   }
 
@@ -47,5 +47,5 @@ export function SignIn() {
       </View>
     </View>
     </Background>
-  )
+  );
 }

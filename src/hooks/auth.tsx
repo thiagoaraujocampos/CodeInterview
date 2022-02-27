@@ -22,7 +22,7 @@ type User = {
 type AuthContextData = {
   user: User;
   loading: boolean;
-  signIn: () => Promise<void>
+  signIn: () => Promise<void>;
 }
 
 type AuthProviderProps = {
@@ -45,16 +45,18 @@ function AuthProvider({ children }: AuthProviderProps) {
     try {
       setLoading(true);
       
-      const authUrl = `${api.defaults.baseURL}/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URL}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`
+      const authUrl = `${api.defaults.baseURL}/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URL}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`;
 
-      const { type, params } = await AuthSession.startAsync({ authUrl }) as AuthorizationResponse
+      const { type, params } = await AuthSession
+      .startAsync({ authUrl }) as AuthorizationResponse;
 
-      if(type === 'success') {
+     if(type === "success") {
         api.defaults.headers.common['Authorization'] = `Bearer ${params.access_token}`;
+        
         const userInfo = await api.get('/users/@me');
 
         const firstName = userInfo.data.username.split(' ')[0];
-        userInfo.data.avatar = `${CDN_IMAGE}/avatars/${userInfo.data.id}/${userInfo.data.avater}.png`
+        userInfo.data.avatar = `${CDN_IMAGE}/avatars/${userInfo.data.id}/${userInfo.data.avatar}.png`;
 
         setUser({
           ...userInfo.data,
@@ -63,9 +65,9 @@ function AuthProvider({ children }: AuthProviderProps) {
         });
       }
         
-      setLoading(false)
+      setLoading(false); 
     } catch {
-      throw new Error('Não foi possível autenticar.');
+      throw new Error('Não foi possível autenticar');
     }
   }
   
