@@ -8,7 +8,7 @@ export function Profile() {
   return(
     <View style={styles.container}>
       
-      <Avatar urlImage='https://scontent.fqsc1-1.fna.fbcdn.net/v/t39.30808-1/s200x200/272080786_465801678533468_3475554019920251202_n.jpg?_nc_cat=100&ccb=1-5&_nc_sid=7206a8&_nc_eui2=AeF1fHDcw3DsNqjhTv70VJqsxPqbGsgnORrE-psayCc5Gg4-WCzdMc84ou7VNhmDeKcxAK3JS-4lhrZDvmUSvZeI&_nc_ohc=jiMB2EU7djsAX_AMweJ&_nc_ht=scontent.fqsc1-1.fna&oh=00_AT-KOzHVfFURXkhGWg4bolUhRz5gdVQ42BRf3l8NPdJFIQ&oe=620E1E05' />
+      <Avatar urlImage='https://instagram.fqsc1-1.fna.fbcdn.net/v/t51.2885-15/255398609_175441054797284_2062283905179635379_n.jpg?stp=dst-jpg_e35&_nc_ht=instagram.fqsc1-1.fna.fbcdn.net&_nc_cat=108&_nc_ohc=qOhkm2qTV9cAX8k5R86&edm=ALQROFkBAAAA&ccb=7-4&ig_cache_key=MjcwNDE4Mjg5MTkxODc0NTcwNw%3D%3D.2-ccb7-4&oh=00_AT_uk06dhNycIXUAk7fq5js-yJhlmFrfPRM9f9mD4b8LwQ&oe=62225AA8&_nc_sid=30a2ef' />
       
       <View>
         <View style={styles.user}>

@@ -1,18 +1,25 @@
 import React from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, Alert, ActivityIndicator } from 'react-native';
+
+import { useAuth } from '../../hooks/auth';
+
+import { ButtonIcon } from '../../components/ButtonIcon';
+import { Background } from '../../components/Background';
 
 import IllustrationImg from '../../assets/illustration.png';
-import { ButtonIcon } from '../../components/ButtonIcon';
 import { styles } from './styles';
+import { theme } from '../../global/styles/theme';
 
-import { Background } from '../../components/Backgound';
 
 export function SignIn() {
-  const navigation = useNavigation();
+  const { loading, signIn } = useAuth();
   
-  function handleSignIn() {
-    navigation.navigate('Home' as never);
+  async function handleSignIn() {
+    try {
+      await signIn();
+    } catch(error: any) {
+      Alert.alert(error);
+    }
   }
 
   return (
@@ -30,11 +37,13 @@ export function SignIn() {
           Crie grupos para treinar suas skills {'\n'}
           com outras pessoas
         </Text>
-
-        <ButtonIcon 
-          title="Entrar com Discord"
-          onPress={handleSignIn}
-        />
+        {
+          loading ? <ActivityIndicator color={theme.colors.primary} /> :
+          <ButtonIcon 
+            title="Entrar com Discord"
+            onPress={handleSignIn}
+          />  
+        }     
       </View>
     </View>
     </Background>

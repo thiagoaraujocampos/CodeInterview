@@ -8,7 +8,7 @@ import { CategorySelect } from '../../components/CategorySelect';
 import { ListDivider } from '../../components/ListDivider';
 
 import { styles } from './styles';
-import { Background } from '../../components/Backgound';
+import { Background } from '../../components/Background';
 import { useNavigation } from '@react-navigation/native';
 
 export function Home() {
@@ -63,26 +63,24 @@ export function Home() {
       </View>
       <CategorySelect 
         categorySelected={category}
-        setCategory={setCategory}
+        setCategory={handleCategorySelect}
       />
 
-      <View style={styles.content}>
-        <ListHeader title='Treinos agendados' subtitle='Total 6' />
-
-        <FlatList 
-          data={appointments}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <Appointment 
-              data={item}
-              onPress={handleAppointmentDetails} 
-            />
-          )}
-            ItemSeparatorComponent={() => <ListDivider />}
-            style={styles.matches}
-            showsVerticalScrollIndicator={false}
-        />
-      </View>
+      <ListHeader title='Treinos agendados' subtitle='Total 6' />
+      <FlatList 
+        data={appointments}
+        keyExtractor={item => item.id}
+        renderItem={({ item }) => (
+          <Appointment 
+            data={item}
+            onPress={handleAppointmentDetails} 
+          />
+        )}
+          ItemSeparatorComponent={() => <ListDivider />}
+          contentContainerStyle={{ paddingBottom: 64 }}
+          style={styles.matches}
+          showsVerticalScrollIndicator={false}
+      />
     </Background>    
   );
 }

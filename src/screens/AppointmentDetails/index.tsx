@@ -4,7 +4,7 @@ import { BorderlessButton } from 'react-native-gesture-handler';
 
 import { ImageBackground, Text, View, FlatList } from 'react-native';
 
-import { Background } from '../../components/Backgound';
+import { Background } from '../../components/Background';
 import { ListHeader } from '../../components/ListHeader';
 import { Header } from '../../components/Header';
 import BannerImg from '../../assets/banner.png';
