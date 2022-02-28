@@ -46,7 +46,7 @@ export const styles = StyleSheet.create({
   },
   column: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   divider: {
     marginRight: 4,
@@ -62,5 +62,5 @@ export const styles = StyleSheet.create({
   footer: {
     marginVertical: 20,
     marginBottom: 56,
-  }
+  },
 })

@@ -1,42 +1,80 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRoute } from '@react-navigation/native';
 import { Fontisto } from '@expo/vector-icons'
 import { BorderlessButton } from 'react-native-gesture-handler';
+import * as Linking from 'expo-linking';
 
-import { ImageBackground, Text, View, FlatList } from 'react-native';
+import { ImageBackground, Text, View, FlatList, Alert, Share, Platform } from 'react-native';
 
 import { Background } from '../../components/Background';
 import { ListHeader } from '../../components/ListHeader';
 import { Header } from '../../components/Header';
+import { Loading } from '../../components/Loading';
 import BannerImg from '../../assets/banner.png';
 
 import { styles } from './styles';
 import { theme } from '../../global/styles/theme';
-import { Member } from '../../components/Member';
+import { Member, MemberProps } from '../../components/Member';
 import { ListDivider } from '../../components/ListDivider';
 import { ButtonIcon } from '../../components/ButtonIcon';
+import { AppointmentProps } from '../../components/Appointment';
+import { api } from '../../services/api.service';
+
+type Params = {
+  guildSelected: AppointmentProps
+}
+
+type GuildWidget = {
+  id: string;
+  name: string;
+  instant_invite: string;
+  members: MemberProps[];
+}
 
 export function AppointmentDetails() {
-  const members = [
-    {
-      id: '1',
-      username: 'Isabelle',
-      avatar_url: 'https://scontent.fqsc1-1.fna.fbcdn.net/v/t39.30808-1/s200x200/272080786_465801678533468_3475554019920251202_n.jpg?_nc_cat=100&ccb=1-5&_nc_sid=7206a8&_nc_eui2=AeF1fHDcw3DsNqjhTv70VJqsxPqbGsgnORrE-psayCc5Gg4-WCzdMc84ou7VNhmDeKcxAK3JS-4lhrZDvmUSvZeI&_nc_ohc=jiMB2EU7djsAX_AMweJ&_nc_ht=scontent.fqsc1-1.fna&oh=00_AT-KOzHVfFURXkhGWg4bolUhRz5gdVQ42BRf3l8NPdJFIQ&oe=620E1E05',
-      status: 'online'
-    },
-    {
-      id: '2',
-      username: 'Isabelle',
-      avatar_url: 'https://scontent.fqsc1-1.fna.fbcdn.net/v/t39.30808-1/s200x200/272080786_465801678533468_3475554019920251202_n.jpg?_nc_cat=100&ccb=1-5&_nc_sid=7206a8&_nc_eui2=AeF1fHDcw3DsNqjhTv70VJqsxPqbGsgnORrE-psayCc5Gg4-WCzdMc84ou7VNhmDeKcxAK3JS-4lhrZDvmUSvZeI&_nc_ohc=jiMB2EU7djsAX_AMweJ&_nc_ht=scontent.fqsc1-1.fna&oh=00_AT-KOzHVfFURXkhGWg4bolUhRz5gdVQ42BRf3l8NPdJFIQ&oe=620E1E05',
-      status: 'offline'
+  const [widget, setWidget] = useState<GuildWidget>({} as GuildWidget);
+  const [loading, setLoading] = useState(true);
+
+  const route = useRoute();
+  const { guildSelected } = route.params as Params;
+
+  async function fetchGuildWidget() {
+    try {
+      const response = await api.get(`/guilds/${guildSelected.guild.id}/widget.json`);
+      setWidget(response.data);
+    } catch(error) {
+      Alert.alert('Verifique as configurações do servidor. O widget está habilitado?');
+    } finally {
+      setLoading(false);
     }
-  ]
+  }
+
+  function handleShareInvitation() {
+    const message = Platform.OS === 'ios' ? 
+    `Junte-se a ${guildSelected.guild.name}`
+    : widget.instant_invite;
+
+    Share.share({
+      message,
+      url: widget.instant_invite
+    });
+  }
+
+  function handleOpenGuild() {
+    Linking.openURL(widget.instant_invite);
+  }
+
+  useEffect(() => {
+    fetchGuildWidget()
+  }, [])
 
   return (
     <Background>
       <Header 
         title="Detalhes"
         action={
-          <BorderlessButton>
+          guildSelected.guild.owner &&
+          <BorderlessButton onPress={handleShareInvitation}>
             <Fontisto 
               name="share"
               size={24}
@@ -51,33 +89,44 @@ export function AppointmentDetails() {
         style={styles.banner}
       >
         <View style={styles.bannerContent}>
-          <Text style={styles.title}> Google Interview </Text>
-          <Text style={styles.subtitle}> Como pesar um elefante sem balança? É possível encaixar uma pilha de moedas do tamanho de um arranha-céus numa sala?  </Text>
+          <Text style={styles.title}> { guildSelected.guild.name } </Text>
+          <Text style={styles.subtitle}> { guildSelected.description } </Text>
         </View>
       </ImageBackground>
 
-      <ListHeader 
-        title="Jogadores"
-        subtitle="Total 3"
-      />
-
-      <FlatList
-        data={members}
-        keyExtractor={item => item.id}
-        renderItem={({item}) => (
-          <Member 
-            data={item}
+      {
+        loading ?
+        <Loading />
+        :
+        <>
+          <ListHeader 
+            title="Jogadores"
+            subtitle={`Total ${widget.members.length}`}
           />
-        )}
-        ItemSeparatorComponent={() => <ListDivider />}
-        style={styles.members}
-      />
 
-      <View style={styles.footer}>
-        <ButtonIcon 
-          title="Entrar no servidor do Discord"
-        />
-      </View>
+          <FlatList
+            data={widget.members}
+            keyExtractor={item => item.id}
+            renderItem={({item}) => (
+              <Member 
+                data={item}
+              />
+            )}
+            ItemSeparatorComponent={() => <ListDivider isCentered />}
+            style={styles.members}
+          />
+        </>
+      }
+
+      {
+        guildSelected.guild.owner &&
+        <View style={styles.footer}>
+          <ButtonIcon 
+            title="Entrar no servidor do Discord"
+            onPress={handleOpenGuild}
+          />
+        </View>
+      }
 
     </Background>
   );
